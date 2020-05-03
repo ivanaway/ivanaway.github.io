@@ -1,4 +1,3 @@
-// TODO finish algorithm
 let BASE_URL = 'https://api.github.com/repos/ivanaway/ivanaway.github.io';
 let BUP_CREDS = 'eml2YW4tMTozMjY5MTM0NDYyNDczZjhkNjdkMzIxZDVlMTA3ZTk1OWM2ZmE5ZTUz';
 let CREDS;
@@ -7,6 +6,11 @@ let imageIndex;
 let imageElement = document.getElementById('image');
 let yesButton = document.getElementById('yes');
 let noButton = document.getElementById('no');
+let acceptButton = document.getElementById('accept');
+
+let allowClick = true;
+let delay = 800;
+let errorCounter = 1;
 
 start();
 
@@ -29,21 +33,45 @@ async function start() {
     //     }
     // }
     updateImage(BASE_URL, CREDS, labels, imageIndex, imageElement);
-    yesButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, true));
-    noButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, false));
+    yesButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, delay, true));
+    noButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, delay, false));
+
+    acceptButton.addEventListener('click', () => {
+        document.getElementById('labelling-content').style = ('display:block;');
+        document.getElementById('accept').style = ('display:none;');
+    });
 }
 
-function clickHandler(baseUrl, creds, imageIndex, imageElement, isImpact) {
-    // Get name of image
-    let srcArr = imageElement.getAttribute('src').split('/');
-    let imageName = srcArr[srcArr.length - 1];
+function clickHandler(baseUrl, creds, imageIndex, imageElement, delay, isImpact) {
+    if (allowClick) {
+        allowClick = false;
+        // Get name of image
+        let srcArr = imageElement.getAttribute('src').split('/');
+        let imageName = srcArr[srcArr.length - 1];
 
-    // Update labels
-    if (isImpact) labels.positives.push(imageName);     
-    else labels.negatives.push(imageName);
-    upload(`${baseUrl}/contents/labels.json`, creds, btoa(JSON.stringify(labels)));
+        // Update labels
+        if (isImpact) labels.positives.push(imageName);     
+        else labels.negatives.push(imageName);
+        upload(`${baseUrl}/contents/labels.json`, creds, btoa(JSON.stringify(labels)));
 
-    updateImage(baseUrl, creds, labels, imageIndex, imageElement);
+        updateImage(baseUrl, creds, labels, imageIndex, imageElement);
+        
+        // Wait before next image
+        setTimeout(() => {
+            allowClick = true;
+            if (errorCounter > 1) errorCounter--;
+        }, delay);
+    } else {
+        window.alert('Not so fast!');
+        errorCounter++;
+        allowClick = false;
+        if (errorCounter >= 5) {
+            let waitNotification = document.getElementById('wait-notif');
+            waitNotification.style = ('display:block;');
+            waitNotification.innerHTML = `You must wait ${errorCounter} seconds before continuing.`;
+        }
+        setTimeout(() => allowClick = true, delay * errorCounter);
+    }
 }
 
 async function updateImage(baseUrl, creds, labels, imageIndex, imageElement) {
@@ -60,7 +88,7 @@ async function updateImage(baseUrl, creds, labels, imageIndex, imageElement) {
     }
     let newImagePath = `images/${newImageDir}/${newImageName}`;
 
-    let response = await GET(`${baseUrl}/contents/${newImagePath}`, creds).then(response => {
+    GET(`${baseUrl}/contents/${newImagePath}`, creds).then(response => {
         if (response instanceof Error) {
         console.error(response);
         } else {
