@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image labelling for epic AI</title>
+        <meta charset="utf-8" />
+        <link rel="icon" href="https://img.icons8.com/dusk/64/000000/artificial-intelligence.png">
+        <style>
+            img, p, ul {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 50vw;
+            }
+            img#image {
+                width: 10%;
+                border: 1px solid;
+                margin-bottom: 1%;
+            }
+            button {
+                border: none;
+                display: inline-block;
+                margin-left: auto;
+                margin-right: auto;
+                cursor: pointer;
+            }
+            button#yes {
+                background-color: #4CAF50;
+            }
+            button#no {
+                background-color: #f44336;
+            }
+            div#buttons {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <script src="main.js" defer></script>
+    <body>
+        <img src="title.png"><span style="float: right; margin: 1vw;" class="zen"></span><br>
+        <p>
+            <b>READ BEFORE PROCEEDING</b><br>
+            An image has impact font and should be labelled "yes" if and only if:<br>
+            <ul>
+                <li>The impact font text cover at least 20% of the image</li>
+                <li>The font size is at least half the size of the image, i.e. if the whole letter were to be visible, it would be as big as half the image.</li>
+                <li>Classic impact - white with black border, no single color.</li>
+            </ul>
+        </p>
+        <img id="image" src="">
+        <div id="buttons">
+            <button id="yes"><img src="yes.png"></button>
+            <button id="no"><img src="no.png"></button>
+        </div>
+        <pre id="content" style="white-space: pre-wrap;"></pre>
+    </body>
+</html>
