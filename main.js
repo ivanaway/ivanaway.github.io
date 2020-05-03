@@ -1,13 +1,23 @@
-$(document).ready(async function() {
-    let BASE_URL = 'https://api.github.com/repos/ivanaway/ivanaway.github.io';
-    let BUP_CREDS = 'eml2YW4tMTozMjY5MTM0NDYyNDczZjhkNjdkMzIxZDVlMTA3ZTk1OWM2ZmE5ZTUz';
-    let CREDS = await getFile('https://api.github.com/repos/zivan-1/zivan-1.github.io/contents/creds.txt', BUP_CREDS);
-    let labels = await getJsonFile(`${BASE_URL}/contents/labels.json`, CREDS);
+// TODO finish algorithm
+let BASE_URL = 'https://api.github.com/repos/ivanaway/ivanaway.github.io';
+let BUP_CREDS = 'eml2YW4tMTozMjY5MTM0NDYyNDczZjhkNjdkMzIxZDVlMTA3ZTk1OWM2ZmE5ZTUz';
+let CREDS;
+let labels;
+let imageIndex;
+let imageElement = document.getElementById('image');
+let yesButton = document.getElementById('yes');
+let noButton = document.getElementById('no');
+
+start();
+
+async function start() {
+    CREDS = await getFile('https://api.github.com/repos/zivan-1/zivan-1.github.io/contents/creds.txt', BUP_CREDS);
+    labels = await getJsonFile(`${BASE_URL}/contents/labels.json`, CREDS);
     // labels = {
     //     positives: ['5.png', '444.png', '23.png'...],
     //     negatives: ['0.png', '1492.png', '55.png'...]
     // }
-    let imageIndex = await getJsonFile(`${BASE_URL}/contents/image-index.json`, CREDS);
+    imageIndex = await getJsonFile(`${BASE_URL}/contents/image-index.json`, CREDS);
     // imageIndex = {
     //     allImages: ['0.png', '1.png', '3.png'...],
     //     allImagesByFolder: {
@@ -18,16 +28,12 @@ $(document).ready(async function() {
     //         .
     //     }
     // }
-    let imageElement = document.getElementById('image');
-    let yesButton = document.getElementById('yes');
-    let noButton = document.getElementById('no');
-
     updateImage(BASE_URL, CREDS, labels, imageIndex, imageElement);
-    yesButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, labels, imageIndex, imageElement, true));
-    noButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, labels, imageIndex, imageElement, false));
-});
+    yesButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, true));
+    noButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, false));
+}
 
-function clickHandler(baseUrl, creds, labels, imageIndex, imageElement, isImpact) {
+function clickHandler(baseUrl, creds, imageIndex, imageElement, isImpact) {
     // Get name of image
     let srcArr = imageElement.getAttribute('src').split('/');
     let imageName = srcArr[srcArr.length - 1];
