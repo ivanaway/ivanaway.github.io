@@ -1,169 +1,23 @@
-let BASE_URL = 'https://api.github.com/repos/ivanaway/ivanaway.github.io';
-let BUP_CREDS = 'eml2YW4tMTozMjY5MTM0NDYyNDczZjhkNjdkMzIxZDVlMTA3ZTk1OWM2ZmE5ZTUz';
-let CREDS;
-let labels;
-let imageIndex;
-let imageElement = document.getElementById('image');
-let yesButton = document.getElementById('yes');
-let noButton = document.getElementById('no');
-let acceptButton = document.getElementById('accept');
-
-let allowClick = true;
-let delay = 800;
-let errorCounter = 1;
-
-start();
-
-async function start() {
-    CREDS = await getFile('https://api.github.com/repos/zivan-1/zivan-1.github.io/contents/creds.txt', BUP_CREDS);
-    labels = await getJsonFile(`${BASE_URL}/contents/labels.json`, CREDS);
-    // labels = {
-    //     positives: ['5.png', '444.png', '23.png'...],
-    //     negatives: ['0.png', '1492.png', '55.png'...]
-    // }
-    imageIndex = await getJsonFile(`${BASE_URL}/contents/image-index.json`, CREDS);
-    // imageIndex = {
-    //     allImages: ['0.png', '1.png', '3.png'...],
-    //     allImagesByFolder: {
-    //         1: ['0.png', '5555.png', '0091.png'...],
-    //         2: ['9887.png'. '8827.png', '112.png'...],
-    //         .
-    //         .
-    //         .
-    //     }
-    // }
-    updateImage(BASE_URL, CREDS, labels, imageIndex, imageElement);
-    yesButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, delay, true));
-    noButton.addEventListener('click', () => clickHandler(BASE_URL, CREDS, imageIndex, imageElement, delay, false));
-
-    acceptButton.addEventListener('click', () => {
-        document.getElementById('labelling-content').style = ('display:block;');
-        document.getElementById('accept').style = ('display:none;');
-    });
-}
-
-function clickHandler(baseUrl, creds, imageIndex, imageElement, delay, isImpact) {
-    if (allowClick) {
-        allowClick = false;
-        // Get name of image
-        let srcArr = imageElement.getAttribute('src').split('/');
-        let imageName = srcArr[srcArr.length - 1];
-
-        // Update labels
-        if (isImpact) labels.positives.push(imageName);     
-        else labels.negatives.push(imageName);
-        upload(`${baseUrl}/contents/labels.json`, creds, btoa(JSON.stringify(labels)));
-
-        updateImage(baseUrl, creds, labels, imageIndex, imageElement);
-        
-        // Wait before next image
-        setTimeout(() => {
-            allowClick = true;
-            if (errorCounter > 1) errorCounter--;
-        }, delay);
-    } else {
-        window.alert('Not so fast!');
-        errorCounter++;
-        allowClick = false;
-        if (errorCounter >= 5) {
-            let waitNotification = document.getElementById('wait-notif');
-            waitNotification.style = ('display:block;');
-            waitNotification.innerHTML = `You must wait ${errorCounter} seconds before continuing.`;
-        }
-        setTimeout(() => allowClick = true, delay * errorCounter);
-    }
-}
-
-async function updateImage(baseUrl, creds, labels, imageIndex, imageElement) {
-    let labeled = labels.positives.concat(labels.negatives);
-    let unlabeled = NOTIntersect(labeled, imageIndex.allImages);
-
-    let newImageName = unlabeled[Math.floor(Math.random() * unlabeled.length)];
-    // Find in which folder the image is
-    let newImageDir;
-    for (let folder in imageIndex.allImagesByFolder) {
-        // Skip loop if the property is from object prototype
-        if (!imageIndex.allImagesByFolder.hasOwnProperty(folder)) continue;
-        if (imageIndex.allImagesByFolder[folder].includes(newImageName)) newImageDir = folder;
-    }
-    let newImagePath = `images/${newImageDir}/${newImageName}`;
-
-    GET(`${baseUrl}/contents/${newImagePath}`, creds).then(response => {
-        if (response instanceof Error) {
-        console.error(response);
-        } else {
-            imageElement.setAttribute('src', response.download_url);
-        }
-    });
-}
-
-async function getFile(url, creds=null) {
-    let fetchJson = await GET(url, creds);
-    if (fetchJson instanceof Error) {
-        console.error(fetchJson);
-    } else {
-        return atob(fetchJson.content);
-    }
-}
-
-async function getJsonFile(url, creds=null) {
-    let fetchJson = await GET(url, creds);
-    if (fetchJson instanceof Error) {
-        console.error(fetchJson);
-    } else {
-        return JSON.parse(atob(fetchJson.content));
-    }
-}
-
-async function upload(url, creds, content) {
-    // Get sha
-    let getSHAResponse = await GET(url, creds);
-    if (getSHAResponse instanceof Error) {
-        console.error(getSHAResponse);
-    } else {
-        let uploadResponseJson = await PUT(url, creds, JSON.stringify({
-            'message': `uploaded to ${url}`,
-            'commiter': {
-              'name': "Monalisa Octocat",
-              'email': "octocat@github.com"
-            },
-            'content': content,
-            sha: getSHAResponse.sha
-        }));
-    }
-}
-
-async function GET(url, creds=null) {
-    let response = await fetch(url, {
-        method: 'GET',
-        headers: {Authorization: `Basic ${creds}`}
-    });
-    if (!response.ok) {
-        return new Error(`Failed getting ${url} ${response.status}: ${response.statusText}`);
-    } else {
-        return await response.json();
-    }
-}
-
-async function PUT(url, creds, body) {
-    let response = await fetch(url, {
-        method: 'PUT',
-        headers: {Authorization: `Basic ${creds}`},
-        body: body
-    });
-    if (!response.ok) {
-        return new Error(`Failed getting ${url} ${response.status}: ${response.statusText}`);
-    } else {
-        return await response.json();
-    }
-}
-
-function NOTIntersect(arr1, arr2) {
-    return arr1.filter(
-        elem => !arr2.includes(elem)
-    ).concat(
-        arr2.filter(
-            elem => !arr1.includes(elem)
-        )
-    );
-}
+function n(a){var b=0;return function(){return b<a.length?{done:!1,value:a[b++]}:{done:!0}}}function q(a){var b="undefined"!=typeof Symbol&&Symbol.iterator&&a[Symbol.iterator];return b?b.call(a):{next:n(a)}}function t(a){a=["object"==typeof globalThis&&globalThis,a,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var b=0;b<a.length;++b){var c=a[b];if(c&&c.Math==Math)return c}throw Error("Cannot find global object");}
+var u=t(this),v="function"==typeof Object.defineProperties?Object.defineProperty:function(a,b,c){a!=Array.prototype&&a!=Object.prototype&&(a[b]=c.value)};function w(a,b){if(b){for(var c=u,e=a.split("."),k=0;k<e.length-1;k++){var l=e[k];l in c||(c[l]={});c=c[l]}e=e[e.length-1];k=c[e];l=b(k);l!=k&&null!=l&&v(c,e,{configurable:!0,writable:!0,value:l})}}
+w("Promise",function(a){function b(d){this.m=0;this.w=void 0;this.h=[];var f=this.u();try{d(f.resolve,f.reject)}catch(g){f.reject(g)}}function c(){this.f=null}function e(d){return d instanceof b?d:new b(function(f){f(d)})}if(a)return a;c.prototype.B=function(d){if(null==this.f){this.f=[];var f=this;this.C(function(){f.M()})}this.f.push(d)};var k=u.setTimeout;c.prototype.C=function(d){k(d,0)};c.prototype.M=function(){for(;this.f&&this.f.length;){var d=this.f;this.f=[];for(var f=0;f<d.length;++f){var g=
+d[f];d[f]=null;try{g()}catch(h){this.J(h)}}}this.f=null};c.prototype.J=function(d){this.C(function(){throw d;})};b.prototype.u=function(){function d(h){return function(m){g||(g=!0,h.call(f,m))}}var f=this,g=!1;return{resolve:d(this.U),reject:d(this.v)}};b.prototype.U=function(d){if(d===this)this.v(new TypeError("A Promise cannot resolve to itself"));else if(d instanceof b)this.V(d);else{a:switch(typeof d){case "object":var f=null!=d;break a;case "function":f=!0;break a;default:f=!1}f?this.T(d):this.F(d)}};
+b.prototype.T=function(d){var f=void 0;try{f=d.then}catch(g){this.v(g);return}"function"==typeof f?this.W(f,d):this.F(d)};b.prototype.v=function(d){this.G(2,d)};b.prototype.F=function(d){this.G(1,d)};b.prototype.G=function(d,f){if(0!=this.m)throw Error("Cannot settle("+d+", "+f+"): Promise already settled in state"+this.m);this.m=d;this.w=f;this.N()};b.prototype.N=function(){if(null!=this.h){for(var d=0;d<this.h.length;++d)l.B(this.h[d]);this.h=null}};var l=new c;b.prototype.V=function(d){var f=this.u();
+d.s(f.resolve,f.reject)};b.prototype.W=function(d,f){var g=this.u();try{d.call(f,g.resolve,g.reject)}catch(h){g.reject(h)}};b.prototype.then=function(d,f){function g(p,r){return"function"==typeof p?function(C){try{h(p(C))}catch(D){m(D)}}:r}var h,m,E=new b(function(p,r){h=p;m=r});this.s(g(d,h),g(f,m));return E};b.prototype["catch"]=function(d){return this.then(void 0,d)};b.prototype.s=function(d,f){function g(){switch(h.m){case 1:d(h.w);break;case 2:f(h.w);break;default:throw Error("Unexpected state: "+
+h.m);}}var h=this;null==this.h?l.B(g):this.h.push(g)};b.resolve=e;b.reject=function(d){return new b(function(f,g){g(d)})};b.race=function(d){return new b(function(f,g){for(var h=q(d),m=h.next();!m.done;m=h.next())e(m.value).s(f,g)})};b.all=function(d){var f=q(d),g=f.next();return g.done?e([]):new b(function(h,m){function E(C){return function(D){p[C]=D;r--;0==r&&h(p)}}var p=[],r=0;do p.push(void 0),r++,e(g.value).s(E(p.length-1),m),g=f.next();while(!g.done)})};return b});
+function x(){x=function(){};u.Symbol||(u.Symbol=y)}function z(a,b){this.H=a;v(this,"description",{configurable:!0,writable:!0,value:b})}z.prototype.toString=function(){return this.H};var y=function(){function a(c){if(this instanceof a)throw new TypeError("Symbol is not a constructor");return new z("jscomp_symbol_"+(c||"")+"_"+b++,c)}var b=0;return a}();
+function A(){x();var a=u.Symbol.iterator;a||(a=u.Symbol.iterator=u.Symbol("Symbol.iterator"));"function"!=typeof Array.prototype[a]&&v(Array.prototype,a,{configurable:!0,writable:!0,value:function(){return B(n(this))}});A=function(){}}function B(a){A();a={next:a};a[u.Symbol.iterator]=function(){return this};return a}function F(){this.j=!1;this.g=null;this.c=void 0;this.b=1;this.D=this.K=0;this.i=null}function G(a){if(a.j)throw new TypeError("Generator is already running");a.j=!0}
+F.prototype.l=function(a){this.c=a};F.prototype.o=function(a){this.i={L:a,O:!0};this.b=this.K||this.D};F.prototype["return"]=function(a){this.i={"return":a};this.b=this.D};function H(a,b,c){a.b=c;return{value:b}}function I(a){this.a=new F;this.S=a}I.prototype.l=function(a){G(this.a);if(this.a.g)return J(this,this.a.g.next,a,this.a.l);this.a.l(a);return K(this)};
+function L(a,b){G(a.a);var c=a.a.g;if(c)return J(a,"return"in c?c["return"]:function(e){return{value:e,done:!0}},b,a.a["return"]);a.a["return"](b);return K(a)}I.prototype.o=function(a){G(this.a);if(this.a.g)return J(this,this.a.g["throw"],a,this.a.l);this.a.o(a);return K(this)};
+function J(a,b,c,e){try{var k=b.call(a.a.g,c);if(!(k instanceof Object))throw new TypeError("Iterator result "+k+" is not an object");if(!k.done)return a.a.j=!1,k;var l=k.value}catch(d){return a.a.g=null,a.a.o(d),K(a)}a.a.g=null;e.call(a.a,l);return K(a)}function K(a){for(;a.a.b;)try{var b=a.S(a.a);if(b)return a.a.j=!1,{value:b.value,done:!1}}catch(c){a.a.c=void 0,a.a.o(c)}a.a.j=!1;if(a.a.i){b=a.a.i;a.a.i=null;if(b.O)throw b.L;return{value:b["return"],done:!0}}return{value:void 0,done:!0}}
+function M(a){this.next=function(b){return a.l(b)};this["throw"]=function(b){return a.o(b)};this["return"]=function(b){return L(a,b)};A();this[Symbol.iterator]=function(){return this}}function N(a){function b(e){return a.next(e)}function c(e){return a["throw"](e)}return new Promise(function(e,k){function l(d){d.done?e(d.value):Promise.resolve(d.value).then(b,c).then(l,k)}l(a.next())})}function O(a){return N(new M(new I(a)))}
+var P,Q,R,S=document.getElementById("image"),T=document.getElementById("yes"),aa=document.getElementById("no"),ba=document.getElementById("accept"),U=!0,V=1;
+O(function(a){switch(a.b){case 1:return H(a,ca(),2);case 2:return P=a.c,H(a,W("https://api.github.com/repos/ivanaway/ivanaway.github.io/contents/labels.json"),3);case 3:return Q=a.c,H(a,W("https://api.github.com/repos/ivanaway/ivanaway.github.io/contents/image-index.json"),4);case 4:R=a.c,X(P,R),T.addEventListener("click",function(){return Y(!0)}),aa.addEventListener("click",function(){return Y(!1)}),ba.addEventListener("click",function(){document.getElementById("labelling-content").style="display:block;";
+document.getElementById("accept").style="display:none;"}),a.b=0}});function Y(a){var b=P,c=R;if(U){U=!1;var e=S.getAttribute("src").split("/");e=e[e.length-1];a?Q.R.push(e):Q.P.push(e);da(b);X(b,c);setTimeout(function(){U=!0;1<V&&V--},800)}else window.alert("Not so fast!"),V++,U=!1,5<=V&&(a=document.getElementById("wait-notif"),a.style="display:block;",a.innerHTML="You must wait "+V+" seconds before continuing."),setTimeout(function(){return U=!0},800*V)}
+function X(a,b){var c=Q,e,k,l,d,f,g;O(function(h){e=c.R.concat(c.P);k=ea(e,b.Y);l=k[Math.floor(Math.random()*k.length)];for(f in b.A)b.A.hasOwnProperty(f)&&b.A[f].includes(l)&&(d=f);g="images/"+d+"/"+l;Z("https://api.github.com/repos/ivanaway/ivanaway.github.io/contents/"+g,a).then(function(m){m instanceof Error?console.error(m):S.setAttribute("src",m.Z)});h.b=0})}
+function ca(){var a="eml2YW4tMTozMjY5MTM0NDYyNDczZjhkNjdkMzIxZDVlMTA3ZTk1OWM2ZmE5ZTUz";a=void 0===a?null:a;var b;return O(function(c){if(1==c.b)return H(c,Z("https://api.github.com/repos/zivan-1/zivan-1.github.io/contents/creds.txt",a),2);b=c.c;if(b instanceof Error)console.error(b);else return c["return"](atob(b.content));c.b=0})}
+function W(a){var b=P;b=void 0===b?null:b;var c;return O(function(e){if(1==e.b)return H(e,Z(a,b),2);c=e.c;if(c instanceof Error)console.error(c);else return e["return"](JSON.parse(atob(c.content)));e.b=0})}
+function da(a){var b=btoa(JSON.stringify(Q)),c;O(function(e){if(1==e.b)return H(e,Z("https://api.github.com/repos/ivanaway/ivanaway.github.io/contents/labels.json",a),2);if(4!=e.b){c=e.c;if(c instanceof Error){console.error(c);e.b=0;return}return H(e,fa(a,JSON.stringify({message:"uploaded to https://api.github.com/repos/ivanaway/ivanaway.github.io/contents/labels.json",commiter:{name:"Monalisa Octocat",email:"octocat@github.com"},content:b,X:c.X})),4)}e.b=0})}
+function Z(a,b){b=void 0===b?null:b;var c;return O(function(e){return 1==e.b?H(e,fetch(a,{method:"GET",headers:{I:"Basic "+b}}),2):4!=e.b?(c=e.c,c.ok?H(e,c.json(),4):e["return"](Error("Failed getting "+a+" "+c.status+": "+c.statusText))):e["return"](e.c)})}
+function fa(a,b){var c;return O(function(e){return 1==e.b?H(e,fetch("https://api.github.com/repos/ivanaway/ivanaway.github.io/contents/labels.json",{method:"PUT",headers:{I:"Basic "+a},body:b}),2):4!=e.b?(c=e.c,c.ok?H(e,c.json(),4):e["return"](Error("Failed getting https://api.github.com/repos/ivanaway/ivanaway.github.io/contents/labels.json "+c.status+": "+c.statusText))):e["return"](e.c)})}
+function ea(a,b){return a.filter(function(c){return!b.includes(c)}).concat(b.filter(function(c){return!a.includes(c)}))};
