@@ -1,4 +1,4 @@
 {
-    "positives": [],
-    "negatives": []
+    "positives": ["1.png"],
+    "negatives": ["100.png"]
 }
