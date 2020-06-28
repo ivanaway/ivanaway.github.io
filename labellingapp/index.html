@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image labelling for epic AI</title>
+        <meta charset="utf-8" />
+        <link rel="icon" href="https://img.icons8.com/dusk/64/000000/artificial-intelligence.png">
+        <style>
+            img, p, ul {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 50vw;
+            }
+            img#image {
+                width: 10%;
+                border: 1px solid;
+                margin-bottom: 1%;
+            }
+            button {
+                border: none;
+                display: inline-block;
+                margin-left: auto;
+                margin-right: auto;
+                cursor: pointer;
+            }
+            button#yes {
+                background-color: #4CAF50;
+            }
+            button#no {
+                background-color: #f44336;
+            }
+            button#accept {
+                font-size: 100%;
+            }
+            div#buttons {
+                text-align: center;
+            }
+            img#example {
+                width: 5vw;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <script src="main.js" defer></script>
+    <script src="appearance.js"></script>
+    <body>
+        <img src="title.png"><span style="float: right; margin: 1vw;" class="zen"></span><br>
+        <p>
+            <b>READ BEFORE PROCEEDING</b><br>
+            An image has impact font and should be labelled "yes" if and only if:<br>
+            <ul>
+                <li>The impact font text cover at least 10% of the image</li>
+                <li>Classic impact - white with black border, no single color.</li>
+                <li>The impact font characteristics are clearly visible - black outline, not too blurry, not too small.</li>
+                <li>Examples of images that should be labelled "yes": <img id="example" src="1.png"><img id="example" src="340.png"></li>
+                <li>Examples of images that contain no impact font and should be labelled "no": <img id="example" src="15516.png"><img id="example" src="1590.png"></li>
+                <li>Example of images that although contain impact font, should still be labelled "no": <img id="example" src="9756.png"><img id="example" src="https://raw.githubusercontent.com/ivanaway/ivanaway.github.io/master/images/14/7814.png"></li>
+            </ul>
+            <div id="buttons"><button id="accept" style="display:block;">I have read the instructions and am ready to begin</button></div>
+        </p>
+        <div id="labelling-content" style="display:none;">
+            <img id="image" src="">
+            <div id="buttons">
+                <p>Does it have impact font?</p>
+                <button id="yes"><img src="yes.png"></button>
+                <button id="no"><img src="no.png"></button>
+                <p style="color:green;">Thank you for contributing!</p>
+                <p id="wait-notif" style="color: red;" style="display:none;"></p>
+                <p><a href="javascript:clickyClick()" id="why-a">Ok cool but why?</a></p>
+                <p id="why" style="max-width:10vw;display:none;">just for shits and giggles ig</p>
+            </div>
+        </div>
+    </body>
+</html>
