@@ -1,0 +1,207 @@
+* {
+    scroll-behavior: smooth;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+:root {
+    --cus-black: rgb(24, 24, 24);
+    --cus-white: rgb(228, 228, 228);
+}
+
+html, body, h1, h2, h3, h4, h5, p {
+    margin: 0;
+    padding: 0;
+}
+
+.black {
+    background: var(--cus-black);
+    color: var(--cus-white);
+}
+.white {
+    background: var(--cus-white);
+    color: var(--cus-black);
+}
+
+header {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    color: var(--cus-white);
+}
+
+header a {
+    float: left;
+    color: white;
+    text-decoration: none;
+}
+
+h1 {
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: normal;
+}
+
+section {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+}
+
+#title { height: 100%; }
+
+#title {
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(rgb(32, 32, 32), var(--cus-black));
+}
+
+h2 {
+    font-size: 3rem;
+    margin: 1.5rem;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    font-weight: normal;
+}
+
+nav {
+    margin: 1.5rem;
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+nav a {
+    overflow: hidden;
+    height: 1.2rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border: var(--cus-white) 1px solid;
+    color: var(--cus-white);
+    text-decoration: none;
+    background-color: var(--cus-black);
+    transition: background-color 0.5s, color 0.5s, height 0.5s;
+    border-radius: 0.2rem;
+}
+nav a div {
+    margin-top: 0.5rem;
+    font-size: 0.8rem; 
+}
+
+nav a:hover {
+    background-color: var(--cus-white);
+    color: var(--cus-black);
+    height: 2.5rem;
+}
+
+@media (max-width: 470px) {
+    nav {
+        flex-direction: column;
+    }
+}
+
+.flashing-cursor {
+    animation: blink 2.4s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    49.9% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    99.9% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.scrollspy {
+    mix-blend-mode: difference;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    color: white;
+    text-align: center;
+    z-index: 1;
+}
+
+.inner {
+    mix-blend-mode: difference;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(165, 165, 165);
+    border-radius: 50%;
+}
+
+.outer {
+    mix-blend-mode: difference;
+    margin: 0.4rem;
+    height: 0.4rem;
+    width: 0.4rem;
+    padding: 0.15rem;
+    border-radius: 50%;
+    border: 0.05rem solid rgb(165, 165, 165, 0);
+    transition: border 0.5s;
+}
+
+.active { border: 0.05rem solid rgb(165, 165, 165); }
+
+.outer:hover { border: 0.05rem solid rgb(165, 165, 165); }
+
+#portfolio {
+    position: relative;
+}
+
+.portfolio-gallery {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 5rem;
+    padding-top: 0;
+    flex-flow: row wrap;
+}
+
+.portfolio-gallery-element {
+    margin: 2rem;
+    padding: 1rem;
+    border: 1px solid var(--cus-black);
+    text-align: center;
+    flex-basis: 35%;
+}
+
+.portfolio-gallery-element img {
+    object-fit: cover;
+    width: 100;
+}
+
+h3 {
+    font-size: 2rem;
+    margin: 2rem;
+}
+
+.bottom-right-bloop {
+    position: absolute;
+    bottom: 2%;
+    right: 10%;
+}
+
+@media (max-width: 425px) {
+    .bottom-right-bloop {
+        right: calc(1rem + 10%);
+    }
+
+    .portfolio-gallery {
+        padding: 0;
+    }
+}
