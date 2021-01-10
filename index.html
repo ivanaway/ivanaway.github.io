@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script>
         var sections;
+        var time = setTimeout(conversation, 5000)
         window.onload = function() {
             sections = document.querySelectorAll("section");
             window.onscroll = function() {
@@ -20,9 +21,30 @@
                 }
             };
         };
+
+        function inactivityTime() {
+            // DOM Events
+            document.onmousemove = resetTimer;
+            document.onkeypress = resetTimer;
+            document.onload = resetTimer;
+            document.onmousemove = resetTimer;
+            document.onmousedown = resetTimer; // touchscreen presses
+            document.ontouchstart = resetTimer;
+            document.onclick = resetTimer;     // touchpad clicks
+            document.onkeydown = resetTimer;   // onkeypress is deprectaed
+            document.addEventListener('scroll', resetTimer, true); // improved; see comments
+        }
+        function resetTimer() {
+            clearTimeout(time);
+            // 1000 milliseconds = 1 second
+        }
+        function conversation() {
+            console.log('we have conversed')
+        }
     </script>
 </head>
 <body>
+    <div class="no-stop">NO. STOP.</div>
     <!--SCROLLSPY-->
     <div class="scrollspy">
         <a href="#title">
@@ -274,7 +296,12 @@
         <section id='contact' class='white'>
             <h3>Contact Me</h3>
             <div class='contact-form'>
-
+                <p><a href="mailto: pyrat32@gmail.com">Email me</a></p>
+                <p>Or, send me a message from here:</p>
+                <label for="first-name">First Name</label><input type="text" name="first-name" id="first-name">
+                <label for="last-name">Last Name</label><input type="text" name="last-name" id="last-name">
+                <label for="email">The email I should send a response to</label><input type="email" name="email" id="email">
+                <label for="message">Your Message</label><input type="text" name="message" id="message">
             </div>    
         </section>
     </main>
