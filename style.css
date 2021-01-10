@@ -1,207 +1,391 @@
+/* ---------------- BIG ---------------- */
 * {
-    scroll-behavior: smooth;
-    font-family: 'Courier New', Courier, monospace;
+  scroll-behavior: smooth;
+  font-family: "Courier New", Courier, monospace;
+  box-sizing: border-box;
 }
 
 :root {
-    --cus-black: rgb(24, 24, 24);
-    --cus-white: rgb(228, 228, 228);
+  --cus-black: rgb(24, 24, 24);
+  --cus-white: rgb(228, 228, 228);
+  --rand-pos: 0;
 }
 
 html, body, h1, h2, h3, h4, h5, p {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .black {
-    background: var(--cus-black);
-    color: var(--cus-white);
+  background: var(--cus-black);
+  color: var(--cus-white);
 }
+
 .white {
-    background: var(--cus-white);
-    color: var(--cus-black);
-}
-
-header {
-    width: 100%;
-    position: absolute;
-    z-index: 1;
-    color: var(--cus-white);
-}
-
-header a {
-    float: left;
-    color: white;
-    text-decoration: none;
-}
-
-h1 {
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: normal;
+  background: var(--cus-white);
+  color: var(--cus-black);
 }
 
 section {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    position: relative;
-    min-height: 100%;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  min-height: 100%;
+  width: 100%;
 }
 
-#title { height: 100%; }
+/* ---------------- HEADER ---------------- */
+header {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  color: var(--cus-white);
+}
+header a {
+  float: left;
+  color: white;
+  text-decoration: none;
+}
 
+h1 {
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
+/* --------------- TITLE ---------------- */
 #title {
-    justify-content: center;
-    text-align: center;
-    background: radial-gradient(rgb(32, 32, 32), var(--cus-black));
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(#202020, var(--cus-black));
 }
 
 h2 {
-    font-size: 3rem;
-    margin: 1.5rem;
-    flex: 1;
-    display: flex;
-    align-items: flex-end;
-    font-weight: normal;
+  font-size: 3rem;
+  margin: 1.5rem;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  font-weight: normal;
 }
 
 nav {
-    margin: 1.5rem;
-    margin-top: 0;
-    display: flex;
-    flex-direction: row;
-    flex: 1;
+  margin: 1.5rem;
+  margin-top: 0;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 }
-
 nav a {
-    overflow: hidden;
-    height: 1.2rem;
-    padding: 0.5rem;
-    margin: 0.5rem;
-    border: var(--cus-white) 1px solid;
-    color: var(--cus-white);
-    text-decoration: none;
-    background-color: var(--cus-black);
-    transition: background-color 0.5s, color 0.5s, height 0.5s;
-    border-radius: 0.2rem;
+  overflow: hidden;
+  height: 2.2rem;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border: var(--cus-white) 1px solid;
+  color: var(--cus-white);
+  text-decoration: none;
+  background-color: var(--cus-black);
+  transition: background-color 0.5s, color 0.5s, height 0.5s;
+  border-radius: 0.2rem;
 }
 nav a div {
-    margin-top: 0.5rem;
-    font-size: 0.8rem; 
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
 }
-
 nav a:hover {
-    background-color: var(--cus-white);
-    color: var(--cus-black);
-    height: 2.5rem;
+  background-color: var(--cus-white);
+  color: var(--cus-black);
+  height: 3.5rem;
 }
 
 @media (max-width: 470px) {
-    nav {
-        flex-direction: column;
-    }
+  nav {
+    flex-direction: column;
+  }
 }
-
 .flashing-cursor {
-    animation: blink 2.4s infinite;
+  animation: blink 2.4s infinite;
 }
 
 @keyframes blink {
-    0% {
-        opacity: 0;
-    }
-    49.9% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    99.9% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
+  49.9% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  99.9% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-
+/* -------------------- SCROLLSPY -------------------- */
 .scrollspy {
-    mix-blend-mode: difference;
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    color: white;
-    text-align: center;
-    z-index: 1;
+  mix-blend-mode: difference;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  color: white;
+  text-align: center;
+  z-index: 1;
 }
 
 .inner {
-    mix-blend-mode: difference;
-    height: 100%;
-    width: 100%;
-    background-color: rgb(165, 165, 165);
-    border-radius: 50%;
+  mix-blend-mode: difference;
+  height: 100%;
+  width: 100%;
+  background-color: #a5a5a5;
+  border-radius: 50%;
 }
 
 .outer {
-    mix-blend-mode: difference;
-    margin: 0.4rem;
-    height: 0.4rem;
-    width: 0.4rem;
-    padding: 0.15rem;
-    border-radius: 50%;
-    border: 0.05rem solid rgb(165, 165, 165, 0);
-    transition: border 0.5s;
+  box-sizing: content-box;
+  mix-blend-mode: difference;
+  margin: 0.4rem;
+  height: 0.4rem;
+  width: 0.4rem;
+  padding: 0.15rem;
+  border-radius: 50%;
+  border: 0.05rem solid rgba(165, 165, 165, 0);
+  transition: border 0.5s;
 }
 
-.active { border: 0.05rem solid rgb(165, 165, 165); }
+.active {
+  border: 0.05rem solid #a5a5a5;
+}
 
-.outer:hover { border: 0.05rem solid rgb(165, 165, 165); }
+.outer:hover {
+  border: 0.05rem solid #a5a5a5;
+}
 
+/* -------------------- PORTFOLIO -------------------- */
 #portfolio {
-    position: relative;
+  position: relative;
 }
 
 .portfolio-gallery {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 5rem;
-    padding-top: 0;
-    flex-flow: row wrap;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5rem;
+  padding-top: 0;
+  flex-flow: row wrap;
 }
 
 .portfolio-gallery-element {
-    margin: 2rem;
-    padding: 1rem;
-    border: 1px solid var(--cus-black);
-    text-align: center;
-    flex-basis: 35%;
+  height: 50vh;
+  margin: 2rem;
+  border: 1px solid var(--cus-black);
+  flex-basis: 35%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.portfolio-gallery-element img {
+  object-fit: cover;
+  width: 100%;
+}
+.portfolio-gallery-element p {
+  display: block;
+  padding: 2rem;
 }
 
-.portfolio-gallery-element img {
-    object-fit: cover;
-    width: 100;
+@keyframes top-left {}
+@keyframes top-right {}
+@keyframes bottom-left {}
+@keyframes bottom-right {}
+.portfolio-gallery-element-image {
+  overflow: hidden;
 }
 
 h3 {
-    font-size: 2rem;
-    margin: 2rem;
+  font-size: 2rem;
+  margin: 2rem;
 }
 
 .bottom-right-bloop {
-    position: absolute;
-    bottom: 2%;
-    right: 10%;
+  position: absolute;
+  bottom: 2%;
+  right: 10%;
 }
 
-@media (max-width: 425px) {
-    .bottom-right-bloop {
-        right: calc(1rem + 10%);
-    }
+@media (max-width: 768px) {
+  .portfolio-gallery-element p {
+    padding: 1rem;
+  }
 
-    .portfolio-gallery {
-        padding: 0;
-    }
+  .portfolio-gallery {
+    padding: 1rem;
+  }
 }
+@media (max-width: 550px) {
+  .bottom-right-bloop {
+    right: calc(1rem + 10%);
+  }
+
+  .portfolio-gallery {
+    display: block;
+    width: 100%;
+    padding: 0;
+  }
+
+  .portfolio-gallery-element {
+    margin: 1rem;
+  }
+}
+/* --------------SKILLS ----------------*/
+.skills-list {
+  display: flex;
+  flex-flow: row;
+  padding: 2rem;
+  padding-top: 0;
+  width: 100%;
+  justify-content: space-between;
+}
+.skills-list h4 {
+  font-size: 1.7rem;
+  margin: 0rem 0rem 1rem 0rem;
+}
+
+@media (max-width: 600px) {
+  .skills-list {
+    flex-flow: column;
+  }
+
+  .skills-list-category {
+    text-align: center;
+  }
+}
+.skills-list-category {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.skills-list-skill {
+  text-align: center;
+  margin: 1rem 0rem 1rem 0rem;
+  width: 100%;
+}
+.skills-list-skill h5 {
+  margin: 1rem 0rem 1rem 0rem;
+}
+
+.progress-bar-border {
+  padding: 0.2rem;
+  border: 1px solid var(--cus-white);
+  width: min(100%, 285px);
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.progress-bar-wrapper {
+  background-color: var(--cus-white);
+  padding: 0.2rem;
+}
+
+.progress-bar {
+  position: relative;
+  height: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: var(--cus-white);
+}
+.progress-bar span {
+  background-color: #00b5e2;
+  flex-basis: 8%;
+  border: 1px solid var(--cus-black);
+  height: 100%;
+  border-radius: 20%;
+}
+.progress-bar span div {
+  margin: auto;
+  height: 1%;
+  width: 80%;
+  border-radius: 10%;
+  box-shadow: 1px 0px 2px 1px white;
+  background-color: white;
+  opacity: 0.5;
+}
+
+.progress-bar-value {
+  mix-blend-mode: hue;
+  background-color: black;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.v0 {
+  width: 100%;
+}
+
+.v1 {
+  width: 90%;
+}
+
+.v2 {
+  width: 80%;
+}
+
+.v3 {
+  width: 70%;
+}
+
+.v4 {
+  width: 60%;
+}
+
+.v5 {
+  width: 50%;
+}
+
+.v6 {
+  width: 40%;
+}
+
+.v7 {
+  width: 30%;
+}
+
+.v8 {
+  width: 20%;
+}
+
+.v9 {
+  width: 10%;
+}
+
+.v10 {
+  width: 0;
+}
+
+/*
+what value of colors and mix blend modes will make it such that:
+    -the value layer overlayed with the base layer does not alter the color of the base layer
+    -the value layer overlayed with the spans alters the color of the spans
+*/
+.skills-list-category {
+  margin: 2rem;
+}
+
+/* --------------------- FOOTER -----------------*/
+footer {
+  text-align: center;
+  background-color: #111111;
+  padding: 1rem;
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */
