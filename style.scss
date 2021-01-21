@@ -119,7 +119,7 @@ nav {
     a:hover {
         background-color: var(--cus-white);
         color: var(--cus-black);
-        height: 3.5rem;
+        height: 4.4rem;
     }
 }
 
@@ -182,6 +182,15 @@ nav {
     border-radius: 50%;
     border: 0.05rem solid rgb(165, 165, 165, 0);
     transition: border 0.5s;
+}
+
+@media (max-width: 425px) {
+    .scrollspy {
+        
+    }
+    .outer {
+        display: inline-block;
+    }
 }
 
 .active { border: 0.05rem solid rgb(165, 165, 165); }

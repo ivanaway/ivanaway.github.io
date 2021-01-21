@@ -113,7 +113,7 @@ nav a div {
 nav a:hover {
   background-color: var(--cus-white);
   color: var(--cus-black);
-  height: 3.5rem;
+  height: 4.4rem;
 }
 
 @media (max-width: 470px) {
@@ -173,6 +173,11 @@ nav a:hover {
   transition: border 0.5s;
 }
 
+@media (max-width: 425px) {
+  .outer {
+    display: inline-block;
+  }
+}
 .active {
   border: 0.05rem solid #a5a5a5;
 }
