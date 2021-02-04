@@ -96,8 +96,10 @@ nav {
   flex: 1;
 }
 nav a {
+  font-size: 1rem;
+  position: relative;
   overflow: hidden;
-  height: 2.2rem;
+  height: 2rem;
   padding: 0rem 0.5rem 0rem 0.5rem;
   margin: 0.5rem;
   border: var(--cus-white) 1px solid;
@@ -110,10 +112,13 @@ nav a {
 nav a div {
   margin: 0.5rem 0rem 0.5rem 0rem;
 }
+nav a .bottom {
+  margin: 0rem 0rem 0rem 0rem;
+  font-size: 0.8rem;
+}
 nav a:hover {
   background-color: var(--cus-white);
   color: var(--cus-black);
-  height: 4.4rem;
 }
 
 @media (max-width: 470px) {
@@ -249,7 +254,9 @@ h3 {
 }
 @media (max-width: 550px) {
   .bottom-right-bloop {
-    right: calc(1rem + 10%);
+    position: relative;
+    bottom: 0;
+    right: 0;
   }
 
   .portfolio-gallery {
@@ -276,6 +283,13 @@ h3 {
   margin: 0rem 0rem 1rem 0rem;
 }
 
+.skills-list-category {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 30%;
+}
+
 @media (max-width: 600px) {
   .skills-list {
     flex-flow: column;
@@ -283,15 +297,9 @@ h3 {
 
   .skills-list-category {
     text-align: center;
+    width: auto;
   }
 }
-.skills-list-category {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  flex-grow: 1;
-}
-
 .skills-list-skill {
   text-align: center;
   margin: 1rem 0rem 1rem 0rem;
