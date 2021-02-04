@@ -12,6 +12,6 @@ function newsSearchHandler(event) {
 async function getNews(q) {
     let date = new Date()
     return await (
-        await fetch(`http://newsapi.org/v2/everything?q=${q}&from=${date.getFullYear()}-${date.getMonth}-${date.getDay()}&sortBy=publishedAt&apiKey=${newsApiKey}`) 
+        await fetch(`https://newsapi.org/v2/everything?q=${q}&from=${date.getFullYear()}-${date.getMonth}-${date.getDay()}&sortBy=publishedAt&apiKey=${newsApiKey}`) 
     ).json()
 }
