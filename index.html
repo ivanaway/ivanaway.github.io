@@ -1,94 +1,312 @@
-<!doctype html>
-<html class="no-js" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Newsify</title>
-    <!-- link to foundation css template -->
-    <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
-    <!-- google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Pacifico&family=Mukta&display=swap" rel="stylesheet">
-    <!-- fontawesome links for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
-    <!-- our css stylesheet -->
-    <link rel="stylesheet" href="./Assets/css/style.css">
-  </head>
-
-  <body>
-
-    <!-- header -->
-    <header>
-      <div class="top-bar">
-        <div class="top-bar-left">
-          <ul class="menu">
-            <li><a class="logo" href="#"><i class="fas fa-newspaper"></i>
-              Newsify.io</a></li>
-          </ul>
-        </div>
-        <div class="top-bar-right">
-        </div>
-      </div>
-    </header>
-    <br>
-
-    <!-- all main content -->
-    <div class="row">
-
-      <!-- news box -->
-      <div id="newsBox" class= "medium-5 columns callout">
-        <div id="newsHead" class="text-center">
-          <h4 id="newsTitle" class= "boxTitle">News Heading Test</h4>
-          <span class="searchBox">
-            <input id="newsSearch" type="search" class="search" placeholder="Search"></input>
-            <button id="newsBtn" type="button" class="button">Search</button>
-          </span>
-        </div>
-        <!-- news results list -->
-        <ul id="newsList">
-          <li>Test li, please delete before working on JS</li>
-          <li>Test li, please delete before working on JS</li>
-          <li>Test li, please delete before working on JS</li>
-          <li>Test li, please delete before working on JS</li>
-          <li>Test li, please delete before working on JS</li>
-        </ul>
-        <button id="clearBtnNews" class="clearBtn button" type="button">Clear</button>
-      </div>
-
-      <!-- empty div to maintain space between boxes -->
-      <div class= "empty medium-2 columns"></div>
-
-      <!-- crypto box-->
-      <div id="cryptoBox" class= "medium-5 columns callout">
-        <div id="cryptoHead" class="text-center">
-          <h4 id="cryptoTitle" class= "boxTitle">Crypto Heading Test</h4>
-          <span class="searchBox">
-            <input id="cryptoSearch" type="search" class="search" placeholder="Search"></input>
-            <button id="cryptoBtn" type="button" class="button">Search</button>
-          </span>
-        </div>
-        <!-- crypto results list -->
-        <ul id="cryptoList">
-          <li><i class="far fa-star"></i> - Test li, please delete before working on JS - <i class="fas fa-level-up-alt"></i></li>
-          <li><i class="far fa-star"></i> - Test li, please delete before working on JS - <i class="fas fa-level-down-alt"></i></li>
-          <li><i class="far fa-star"></i> - Test li, please delete before working on JS - <i class="fas fa-level-down-alt"></i></li>
-          <li><i class="far fa-star"></i> - Test li, please delete before working on JS - <i class="fas fa-level-down-alt"></i></li>
-          <li><i class="far fa-star"></i> - Test li, please delete before working on JS - <i class="fas fa-level-up-alt"></i></li>
-        </ul>
-        <button id="clearBtnCrypto" class="clearBtn button" type="button">Clear</button>
-      </div>
-
-    </div>
-
-    <!-- javaScript for foundation css styling -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ivan Zabrodin</title>
+    <link rel="stylesheet" href="style.css">
     <script>
-      $(document).foundation();
+        var sections;
+        var time = setTimeout(conversation, 5000)
+        window.onload = function() {
+            sections = document.querySelectorAll("section");
+            window.onscroll = function() {
+                var scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+                for (let i = 0; i < sections.length; i++) {
+                    if (scrollPosition > (sections[i].offsetTop - sections[i].clientHeight * .4)) {
+                        for (let i = 0; i < sections.length; i++) {
+                            document.querySelector(`.scrollspy a[href*='${sections[i].id}'] .outer`).setAttribute('class', 'outer');
+                        }
+                        document.querySelector(`.scrollspy a[href*='${sections[i].id}'] .outer`).setAttribute('class', 'outer active');
+                    }
+                }
+            };
+        };
+
+        function inactivityTime() {
+            // DOM Events
+            document.onmousemove = resetTimer;
+            document.onkeypress = resetTimer;
+            document.onload = resetTimer;
+            document.onmousemove = resetTimer;
+            document.onmousedown = resetTimer; // touchscreen presses
+            document.ontouchstart = resetTimer;
+            document.onclick = resetTimer;     // touchpad clicks
+            document.onkeydown = resetTimer;   // onkeypress is deprectaed
+            document.addEventListener('scroll', resetTimer, true); // improved; see comments
+        }
+        function resetTimer() {
+            clearTimeout(time);
+            // 1000 milliseconds = 1 second
+        }
+        function conversation() {
+            console.log('we have conversed')
+        }
+
+        function cat() {
+            fetch('https://api.thecatapi.com/v1/images/search?size=full&api_key=dc8be8a3-bed2-4dae-8814-5b2945e52120')
+            .then(r => r.json())
+            .then(d => {
+                console.log(d)
+                window.location = d[0].url
+            })
+        }
     </script>
-
-    <!-- our javaScript-->
-    <script src="script.js" defer></script>
-
-  </body>
+</head>
+<body>
+    <div class="no-stop">NO. STOP.</div>
+    <!--SCROLLSPY-->
+    <div class="scrollspy">
+        <a href="#title">
+            <div class="outer active"><div class="inner"></div></div>
+        </a>
+        <a href="#portfolio">
+            <div class="outer"><div class="inner"></div></div>
+        </a>
+        <a href="#skills">
+            <div class="outer"><div class="inner"></div></div>
+        </a>
+    </div>
+    <!--HEADER-->
+    <header>
+        <a href="index.html"><h1>Ivan Zabrodin</h1></a>
+    </header>
+    <!--MAIN SECTIONS-->
+    <main>
+        <!--TITLE-->
+        <section id='title' class='black'>
+            <h2><div>A Web Developer<span class="flashing-cursor">|</span></div></h2>
+            <nav>
+                <a href="#portfolio">
+                    <div>What Have I Made?&nbsp;&#8641;</div>
+                    <div class='bottom'>My portfolio</div>
+                </a>
+                <a href="#skills">
+                    <div>What Can I Do?&nbsp;&#8641;</div>
+                    <div class='bottom'>My Skills</div>
+                </a>
+                <a href="mailto: pyrat32@gmail.com">
+                    <div>Contact Me&nbsp;&#8641;</div>
+                    <div class='bottom'>&#128231;&#128222;</div>
+                </a>
+            </nav>
+        </section>
+        <!--PORTFOLIO-->
+        <section id='portfolio' class='white'>
+            <h3>My Portfolio</h3>
+            <div class='portfolio-gallery'>
+                <div class='portfolio-gallery-element'>
+                    <!--WEBSITE 1-->
+                    <div class="portfolio-gallery-element-image">
+                        <img src="https://picsum.photos/200/300" alt="">
+                    </div>
+                    <p>description</p>
+                </div>
+                <div class='portfolio-gallery-element'>
+                    <!--WEBSITE 2-->
+                    <div class="portfolio-gallery-element-image">
+                        <img src="https://picsum.photos/300/300" alt="">
+                    </div>
+                    <p>description</p>
+                </div>
+                <div class='portfolio-gallery-element'>
+                    <!--WEBSITE 3-->
+                    <div class="portfolio-gallery-element-image">
+                        <img src="https://picsum.photos/300/200" alt="">
+                    </div>
+                    <p>description</p>
+                </div>
+                <div class='portfolio-gallery-element'>
+                    <!--WEBSITE 4-->
+                    <div class="portfolio-gallery-element-image">
+                        <img src="https://picsum.photos/200/200" alt="">
+                    </div>
+                    <p>description</p>
+                </div>
+            </div>
+            <div class='bottom-right-bloop'>
+                <a href="full-portfolio.html">All My Work&#8641;</a>
+            </div>
+        </section>
+        <!--SKILLS-->
+        <section id='skills' class='black'>
+            <h3>My Skills</h3>
+            <div class='skills-list'>
+                <div class='skills-list-category'>
+                    <h4>Front End</h4>
+                    <div class='skills-list-skill'>
+                        <h5>HTML + CSS + JavaScript</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v7"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class='skills-list-skill'>
+                        <h5>JQuery</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v6"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='skills-list-skill'>
+                        <h5>Bootstrap</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v4"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='skills-list-skill'>
+                        <h5>React</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v4"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='skills-list-category'>
+                    <h4>Back End</h4>
+                    <div  class='skills-list-skill'>
+                        <h5>PHP</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v5"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class='skills-list-skill'>
+                        <h5>Laravel</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v0"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='skills-list-skill'>
+                        <h5>Node</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v7"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='skills-list-category'>
+                    <h4>Misc</h4>
+                    <div class='skills-list-skill'>
+                        <h5>MongoDB</h5>
+                        <div class="progress-bar-border">
+                            <div class="progress-bar-wrapper">
+                                <div class='progress-bar'>
+                                    <div class="progress-bar-value v2"></div>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                    <span><div></div></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class='white'>
+        <p>@COPYRIGHT DON'T COPY THIS</p>
+        <p><a href="mailto: pyrat32@gmail.com">Email Me</a></p>
+        <p style='font-size: 0.6rem; margin-top: 1rem;'><a href="javascript:cat()">Ok cool. Now show me the cat.</a></p>
+    </footer>
+</body>
 </html>

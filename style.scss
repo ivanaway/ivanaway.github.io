@@ -100,10 +100,10 @@ nav {
     flex: 1;
 
     a {
-        font-size: 1rem;
+        font-size: 10px;
         position: relative;
         overflow: hidden;
-        height: 2rem;
+        height: 20px;
         padding: 0rem 0.5rem 0rem 0.5rem;
         margin: 0.5rem;
         border: var(--cus-white) 1px solid;
@@ -114,20 +114,20 @@ nav {
         border-radius: 0.2rem;
 
         div {
-            margin: 0.5rem 0rem 0.5rem 0rem;
+            margin: 5px 0rem 5px 0rem;
         }
 
         .bottom {
-            
             margin: 0rem 0rem 0rem 0rem;
             font-size: 0.8rem;
         }
     }
 
     a:hover {
+        height: 2.8rem;
         background-color: var(--cus-white);
         color: var(--cus-black);
-        }
+    }
 }
 
 
@@ -193,7 +193,7 @@ nav {
 
 @media (max-width: 425px) {
     .scrollspy {
-        
+        top: 1rem;
     }
     .outer {
         display: inline-block;
